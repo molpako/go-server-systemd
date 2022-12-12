@@ -1,0 +1,13 @@
+[Unit]
+Description=Hello World HTTP
+Requires=network.target
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/app/main
+ExecReload=kill -HUP $MAINPID
+StandardOutput=append:/tmp/test.log
+
+[Install]
+WantedBy=multi-user.target
