@@ -1,6 +1,3 @@
-//go:build ignore
-// +build ignore
-
 package main
 
 import (
@@ -18,24 +15,25 @@ import (
 
 func HelloServer(w http.ResponseWriter, req *http.Request) {
 	now := time.Now()
-	io.WriteString(w, "good afternoon socket activated world!\n")
-	io.WriteString(w, now.GoString())
+	io.WriteString(w, now.String())
+	io.WriteString(w, "\n")
 }
 
 func main() {
 	listeners, err := activation.Listeners()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	if len(listeners) == 0 {
-		panic("Unexpected number of socket activation fds")
+		log.Fatal("Unexpected number of socket activation fds")
 	}
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", HelloServer)
 	srv := &http.Server{
 		Handler: mux,
 	}
+
 	idleConnsClosed := make(chan struct{})
 	go func() {
 		sigint := make(chan os.Signal, 1)
@@ -46,9 +44,9 @@ func main() {
 		if err := srv.Shutdown(context.Background()); err != nil {
 			log.Printf("HTTP server Shutdown: %v", err)
 		}
-		log.Println("HTTP server Shutdown: OK")
 		close(idleConnsClosed)
 	}()
+
 	if err := srv.Serve(listeners[0]); err != http.ErrServerClosed {
 		log.Fatalf("HTTP server ListenAndServe: %v", err)
 	}
