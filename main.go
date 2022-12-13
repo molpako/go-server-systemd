@@ -16,7 +16,7 @@ import (
 func HelloServer(w http.ResponseWriter, req *http.Request) {
 	time.Sleep(1 * time.Second)
 	now := time.Now()
-	io.WriteString(w, now.String())
+	io.WriteString(w, now.Format(time.Stamp))
 	io.WriteString(w, "\n")
 }
 
