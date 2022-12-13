@@ -8,8 +8,4 @@ services:
     privileged: true
     ports:
       - 8076:8076
-    volumes:
-      - ./hello.service:/etc/systemd/system/hello.service
-      - ./hello.socket:/etc/systemd/system/hello.socket
-      - ./main.go:/app
     command: /sbin/init

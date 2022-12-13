@@ -5,9 +5,10 @@ After=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=/app/main
+ExecStart=/app/go-server-systemd
 ExecReload=kill -HUP $MAINPID
-StandardOutput=append:/tmp/test.log
+StandardOutput=append:/app/test.log
+StandardError=append:/app/test.log
 
 [Install]
 WantedBy=multi-user.target
